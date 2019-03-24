@@ -8,11 +8,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
-#include <sys/time.h>
 
 #define rotateleft(x,n) ((x<<n) | (x>>(32-n)))
 #define rotateright(x,n) ((x>>n) | (x<<(32-n)))
@@ -207,42 +205,50 @@ void HASH(unsigned char * str1)
    // printf("\n\n");
 }
 
-int64_t current_timestamp(){
-    struct timeval currentTime;
-    gettimeofday(&currentTime, NULL);
+uint64_t current_timestamp(){
+    long int ns;
+    time_t sec;
+    struct timespec spec;
 
-    return (int64_t)(currentTime.tv_sec) *
-    (int64_t)1000000000 + (int64_t)(currentTime.tv_usec);
-
+    clock_gettime(CLOCK_REALTIME, &spec);
+    sec = spec.tv_sec;
+    ns = spec.tv_nsec;
+    return  (uint64_t) sec * BILLION + (uint64_t) ns;
 }
 
 extern char* ASM_HASH(char *str);
 
+
 int main(int argc, const char * argv[]) {
-    // insert code here...
+
+
 
     char txt[100];
      printf("Enter Txt :");
      gets(txt);
-     int64_t before,after;
+    uint64_t before,after;
 
     before=current_timestamp();
     char * res = ASM_HASH(txt);
     after = current_timestamp();
 
 
-    printf("HASH In ASM Is:");
-    for (int i = strlen(res); i >= 0 ; i--) {
+    printf("\n\n HASH In ASM Is:");
+    int len = strlen(res) -1 ;
+
+    for (int i = len; i >= 0 ; i--)
         printf("%02x", (unsigned char) res[i]);
-    }
-    printf("   Calculation Time : %lli in Mili Sec\n\n ",after - before);
+
+
+    printf("   With Length : %i   Calculation Time : %lli In Nano.\n\n "
+            ,len,after-before);
 
     before=current_timestamp();
     HASH((unsigned char *) txt);
     after=current_timestamp();
 
 
-    printf("   Calculation Time : %lli in Mili Sec\n\n ",after - before);
+    printf("   Calculation Time : %lli In Nano.\n\n ",after-before);
 
     return 0;
 }

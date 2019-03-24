@@ -107,12 +107,13 @@
             
             
             
-           mov eax , [eax] ; Copy To 1bit reg?
-           mov [ebx] ,eax
-
-           add edx , 4d
-
-            
+              
+            ; Copy input Arg To _Str
+        mov ecx , [eax] ; Copy To 1bit reg?
+        mov [ebx] ,ecx
+        
+        add edx ,4d
+        
                    
             ; Pop To Revent Regs Values
             pop ecx
@@ -1459,15 +1460,16 @@
        xor edx , edx ; To Rest ecx for save _returnWord lenght
        mov edx , 0d
         ;append_To_Result Space  
-        append_long_To_Result h4  
+        append_long_To_Result h4
         ;append_char_To_Result Space  
-        append_long_To_Result h3 
+        append_long_To_Result h3
         ;append_char_To_Result Space 
-        append_long_To_Result h2  
+        append_long_To_Result h2
         ;append_char_To_Result Space 
         append_long_To_Result h1 
         ;append_char_To_Result Space 
         append_long_To_Result h0 
+        
                 
       
       mov  eax,  _returnWord    ; Return _Word
