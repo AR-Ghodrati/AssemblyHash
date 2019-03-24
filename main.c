@@ -8,9 +8,13 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
+#include <sys/time.h>
+
+#define BILLION  1000000000L
 
 #define rotateleft(x,n) ((x<<n) | (x>>(32-n)))
 #define rotateright(x,n) ((x>>n) | (x<<(32-n)))
