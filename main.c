@@ -24,7 +24,7 @@
 
 void HASH(unsigned char * str1)
 {
-    unsigned long int h0, h1, h2, h3, h4, a, b, c, d, e, f, k, temp;
+   uint32_t h0, h1, h2, h3, h4, a, b, c, d, e, f, k, temp;
     int i = 0;
     int j = 0;
     h0 = 0x67452301;
@@ -102,7 +102,7 @@ void HASH(unsigned char * str1)
 
   //  printf("\n number_of_chunks: %d\n",number_of_chunks);
 
-    unsigned long int word[80];
+    uint32_t word[80];
 
 
 
@@ -205,7 +205,7 @@ void HASH(unsigned char * str1)
         h4 = h4 + e;
     }
    // printf("\n\n");
-    printf("HASH In C: %x%x%x%x%x", h0, h1, h2, h3, h4);
+   // printf("HASH In C: %lx%lu%lx%lx%lx", h0, h1, h2, h3, h4);
    // printf("\n\n");
 }
 
@@ -227,32 +227,29 @@ int main(int argc, const char * argv[]) {
 
 
 
-    char txt[100];
-     printf("Enter Txt :");
-     gets(txt);
-    uint64_t before,after;
+    clock_t before,after;
 
-    before=current_timestamp();
-    char * res = ASM_HASH(txt);
-    after = current_timestamp();
+    before=clock();
+    for (int i = 0; i <1000 ; ++i) {
+        HASH((unsigned char *) "HI");
+    }
+    after=clock();
 
-
-    printf("\n\n HASH In ASM Is:");
-    int len = strlen(res) -1 ;
-
-    for (int i = len; i >= 0 ; i--)
-        printf("%02x", (unsigned char) res[i]);
+    printf(" C For 1000  Calculation Time : %lf In Nano.\n\n ",((double)(after-before)/CLK_TCK));
 
 
-    printf("   With Length : %i   Calculation Time : %lli In Nano.\n\n "
-            ,len,after-before);
+    before=clock();
+    for (int j = 0; j <1000 ; ++j) {
+       ASM_HASH("HI");
+    }
+    after = clock();
 
-    before=current_timestamp();
-    HASH((unsigned char *) txt);
-    after=current_timestamp();
+    printf(" ASM FOR 1000  Calculation Time : %lf In Nano.\n\n ",((double)(after-before)/CLK_TCK));
 
 
-    printf("   Calculation Time : %lli In Nano.\n\n ",after-before);
+
+
+
 
     return 0;
 }

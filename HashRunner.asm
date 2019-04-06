@@ -1,5 +1,5 @@
 
-        ;%include "io.inc"
+        %include "io.inc"
         
         section .macro
         
@@ -731,6 +731,7 @@
         h3 dd 0x10325476
         h4 dd 0xC3D2E1F0
         
+        txt dd "HI"
         
         
         
@@ -739,20 +740,22 @@
         
 
         section .text
-        global _ASM_HASH
-        _ASM_HASH:
-        ;global CMAIN
-        ;CMAIN:
-          push    ebp             ; create stack frame
-          mov     ebp, esp
+      ;  global _ASM_HASH
+      ;  _ASM_HASH:
+        global CMAIN
+        CMAIN:
+    mov ebp, esp; for correct debugging
+     ;    push    ebp             ; create stack frame
+     ;     mov     ebp, esp
         
-         cmp     edi, 0          ; Check if base is negative
-         mov     eax, 0          ; and return 0 if so
-         jl      end
+      ;   cmp     edi, 0          ; Check if base is negative
+      ;   mov     eax, 0          ; and return 0 if so
+      ;   jl      end
         
         
         
-          copy_string [ebp+8] , _str , 0
+         ; copy_string [ebp+8] , _str , 0
+          copy_string  txt, _str , 0
           count_string_length _str ,0 ; Copy Return In ecx Reg
              
          mov [original_length] , ecx ; To Save To original_length
@@ -1182,6 +1185,15 @@
         ;word[j] = rotateleft(....)
         rol edx , 1d
         
+        cmp ecx , 47d
+        je PRINT
+        jmp Rem
+        
+        PRINT:
+        PRINT_HEX 4 , edx
+        
+        Rem:
+        
         
         
         mov dword[temp_Word] , edx
@@ -1479,6 +1491,6 @@
         
         
 end:
-      pop     ebp             ; restore the base pointer
+     ; pop     ebp             ; restore the base pointer
       ret   
             
